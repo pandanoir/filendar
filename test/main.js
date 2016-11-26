@@ -7,14 +7,25 @@ const toDate = (year, month) => date => new Calendar.Date(year, month, date);
 describe('calendar.js', () => {
     describe('Date', () => {
         it('constructor', () => {
-            assert.ok(new Calendar.Date(2016, 11 - 1, 25).is(filter.and(filter.nthDay(4, FRI), filter.and(filter.year(2016), filter.month(11 - 1)))));
+            assert.ok(new Calendar.Date(2016, 11 - 1, 25).is(
+                filter.and(filter.nthDay(4, FRI), filter.and(filter.year(2016), filter.month(11 - 1)))
+            ));
         });
     });
     describe('Month', () => {
         it('constructor', () => {
-            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(filter.day(FRI)), [4, 11, 18, 25].map(toDate(2016, 11 - 1)));
-            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(filter.day(TUE)), [1, 8, 15, 22, 29].map(toDate(2016, 11 - 1)));
-            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(filter.nthDay(1, TUE)), [1].map(toDate(2016, 11 - 1)));
+            assert.deepEqual(
+                new Calendar.Month(2016, 11 - 1).filter(filter.day(FRI)),
+                [4, 11, 18, 25].map(toDate(2016, 11 - 1))
+            );
+            assert.deepEqual(
+                new Calendar.Month(2016, 11 - 1).filter(filter.day(TUE)),
+                [1, 8, 15, 22, 29].map(toDate(2016, 11 - 1))
+            );
+            assert.deepEqual(
+                new Calendar.Month(2016, 11 - 1).filter(filter.nthDay(1, TUE)),
+                [1].map(toDate(2016, 11 - 1))
+            );
         });
     });
     describe('Year', () => {
@@ -51,19 +62,22 @@ describe('calendar.js', () => {
             assert.ok(new Calendar.Date(2016, 0, 11).is(nthDay(2, MON)));
         });
         it('and', () => {
-            assert.deepEqual(new Calendar.Year(2016).filter(filter.and(filter.month(10 - 1), filter.date(13))), [new Calendar.Date(2016, 10 - 1, 13)]);
+            assert.deepEqual(
+                new Calendar.Year(2016).filter(filter.and(filter.month(10 - 1), filter.date(13))),
+                [new Calendar.Date(2016, 10 - 1, 13)]
+            );
         });
         it('or', () => {
-            assert.deepEqual(new Calendar.Month(2016, 10 - 1).filter(filter.or(filter.day(FRI), filter.date(13))), [
-                new Calendar.Date(2016, 10 - 1, 7),
-                new Calendar.Date(2016, 10 - 1, 13),
-                new Calendar.Date(2016, 10 - 1, 14),
-                new Calendar.Date(2016, 10 - 1, 21),
-                new Calendar.Date(2016, 10 - 1, 28)
-            ]);
+            assert.deepEqual(
+                new Calendar.Month(2016, 10 - 1).filter(filter.or(filter.day(FRI), filter.date(13))),
+                [7, 13, 14, 21, 28].map(toDate(2016, 10 - 1))
+            );
         });
         it('not', () => {
-            assert.deepEqual(new Calendar.Month(2016, 10 - 1).filter(filter.not(filter.or(filter.day(SAT), filter.day(SUN)))), [3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31].map(toDate(2016, 10 - 1)));
+            assert.deepEqual(
+                new Calendar.Month(2016, 10 - 1).filter(filter.not(filter.or(filter.day(SAT), filter.day(SUN)))),
+                [3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31].map(toDate(2016, 10 - 1))
+            );
         });
         it('since', () => {
             const since = filter.since.bind(filter);
@@ -110,23 +124,74 @@ describe('calendar.js', () => {
             assert.ok(new Calendar.Date(2016, 0, 1).is(leapYear()));
             assert.ok(!new Calendar.Date(2017, 0, 1).is(leapYear()));
         });
-        it('vernalEquinoxDay', () => assert.deepEqual(ph1.filter(filter.vernalEquinoxDay()), [new Calendar.Date(2016, 3 - 1, 20)]));
-        it('autumnalEquinoxDay', () => assert.deepEqual(ph1.filter(filter.autumnalEquinoxDay()), [new Calendar.Date(2016, 9 - 1, 22)]));
-        it('fullMoonNight', () => assert.deepEqual(new Calendar.Year(2016).filter(filter.fullMoonNight()), [new Calendar.Date(2016, 9 - 1, 15)]));
-        it('newYearsDay', () => assert.deepEqual(ph1.filter(filter.newYearsDay()), [new Calendar.Date(2016, 1 - 1, 1)]));
-        it('comingOfAgeDay', () => assert.deepEqual(ph1.filter(filter.comingOfAgeDay()), [new Calendar.Date(2016, 1 - 1, 11)]));
-        it('foundationDay', () => assert.deepEqual(ph1.filter(filter.foundationDay()), [new Calendar.Date(2016, 2 - 1, 11)]));
-        it('showaDay', () => assert.deepEqual(ph1.filter(filter.showaDay()), [new Calendar.Date(2016, 4 - 1, 29)]));
-        it('constitutionMemorialDay', () => assert.deepEqual(ph1.filter(filter.constitutionMemorialDay()), [new Calendar.Date(2016, 5 - 1, 3)]));
-        it('greeneryDay', () => assert.deepEqual(ph1.filter(filter.greeneryDay()), [new Calendar.Date(2016, 5 - 1, 4)]));
-        it('childrensDay', () => assert.deepEqual(ph1.filter(filter.childrensDay()), [new Calendar.Date(2016, 5 - 1, 5)]));
-        it('marineDay', () => assert.deepEqual(ph1.filter(filter.marineDay()), [new Calendar.Date(2016, 7 - 1, 18)]));
-        it('mountainDay', () => assert.deepEqual(ph1.filter(filter.mountainDay()), [new Calendar.Date(2016, 8 - 1, 11)]));
-        it('respectForTheAgedDay', () => assert.deepEqual(ph1.filter(filter.respectForTheAgedDay()), [new Calendar.Date(2016, 9 - 1, 19)]));
-        it('healthAndSportsDay', () => assert.deepEqual(ph1.filter(filter.healthAndSportsDay()), [new Calendar.Date(2016, 10 - 1, 10)]));
-        it('cultureDay', () => assert.deepEqual(ph1.filter(filter.cultureDay()), [new Calendar.Date(2016, 11 - 1, 3)]));
-        it('labourThanksgivingDay', () => assert.deepEqual(ph1.filter(filter.labourThanksgivingDay()), [new Calendar.Date(2016, 11 - 1, 23)]));
-        it('theEmperorsBirthday', () => assert.deepEqual(ph1.filter(filter.theEmperorsBirthday()), [new Calendar.Date(2016, 12 - 1, 23)]));
+        it('vernalEquinoxDay', () => assert.deepEqual(
+            ph1.filter(filter.vernalEquinoxDay()),
+            [new Calendar.Date(2016, 3 - 1, 20)]
+        ));
+        it('autumnalEquinoxDay', () => assert.deepEqual(
+            ph1.filter(filter.autumnalEquinoxDay()),
+            [new Calendar.Date(2016, 9 - 1, 22)]
+        ));
+        it('fullMoonNight', () => assert.deepEqual(
+            new Calendar.Year(2016).filter(filter.fullMoonNight()),
+            [new Calendar.Date(2016, 9 - 1, 15)]
+        ));
+        it('newYearsDay', () => assert.deepEqual(
+            ph1.filter(filter.newYearsDay()),
+            [new Calendar.Date(2016, 1 - 1, 1)]
+        ));
+        it('comingOfAgeDay', () => assert.deepEqual(
+            ph1.filter(filter.comingOfAgeDay()),
+            [new Calendar.Date(2016, 1 - 1, 11)]
+        ));
+        it('foundationDay', () => assert.deepEqual(
+            ph1.filter(filter.foundationDay()),
+            [new Calendar.Date(2016, 2 - 1, 11)]
+        ));
+        it('showaDay', () => assert.deepEqual(
+            ph1.filter(filter.showaDay()),
+            [new Calendar.Date(2016, 4 - 1, 29)]
+        ));
+        it('constitutionMemorialDay', () => assert.deepEqual(
+            ph1.filter(filter.constitutionMemorialDay()),
+            [new Calendar.Date(2016, 5 - 1, 3)]
+        ));
+        it('greeneryDay', () => assert.deepEqual(
+            ph1.filter(filter.greeneryDay()),
+            [new Calendar.Date(2016, 5 - 1, 4)]
+        ));
+        it('childrensDay', () => assert.deepEqual(
+            ph1.filter(filter.childrensDay()),
+            [new Calendar.Date(2016, 5 - 1, 5)]
+        ));
+        it('marineDay', () => assert.deepEqual(
+            ph1.filter(filter.marineDay()),
+            [new Calendar.Date(2016, 7 - 1, 18)]
+        ));
+        it('mountainDay', () => assert.deepEqual(
+            ph1.filter(filter.mountainDay()),
+            [new Calendar.Date(2016, 8 - 1, 11)]
+        ));
+        it('respectForTheAgedDay', () => assert.deepEqual(
+            ph1.filter(filter.respectForTheAgedDay()),
+            [new Calendar.Date(2016, 9 - 1, 19)]
+        ));
+        it('healthAndSportsDay', () => assert.deepEqual(
+            ph1.filter(filter.healthAndSportsDay()),
+            [new Calendar.Date(2016, 10 - 1, 10)]
+        ));
+        it('cultureDay', () => assert.deepEqual(
+            ph1.filter(filter.cultureDay()),
+            [new Calendar.Date(2016, 11 - 1, 3)]
+        ));
+        it('labourThanksgivingDay', () => assert.deepEqual(
+            ph1.filter(filter.labourThanksgivingDay()),
+            [new Calendar.Date(2016, 11 - 1, 23)]
+        ));
+        it('theEmperorsBirthday', () => assert.deepEqual(
+            ph1.filter(filter.theEmperorsBirthday()),
+            [new Calendar.Date(2016, 12 - 1, 23)]
+        ));
         it('publicHoliday', () => {
             assert.deepEqual(ph1, [
                 new Calendar.Date(2016, 1 - 1, 1),
@@ -147,7 +212,10 @@ describe('calendar.js', () => {
                 new Calendar.Date(2016, 12 - 1, 23)
             ]);
         });
-        it('substituteHoliday', () => assert.deepEqual(new Calendar.Year(2016).filter(filter.substituteHoliday()), [new Calendar.Date(2016, 3 - 1, 21)]));
+        it('substituteHoliday', () => assert.deepEqual(
+            new Calendar.Year(2016).filter(filter.substituteHoliday()),
+            [new Calendar.Date(2016, 3 - 1, 21)]
+        ));
         it('weekday', () => {
             const res = [];
             for (let i = 0; i < 12; i++) res.push(new Calendar.Month(2016, i).filter(filter.weekday()).length);
