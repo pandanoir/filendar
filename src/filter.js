@@ -13,6 +13,7 @@ export default {
     since: since => date => since.getTime() <= date.getTime(),
     until: until => date => date.getTime() <= until.getTime(),
     range: (start, end) => date => start.getTime() <= date.getTime() && date.getTime() <= end.getTime(),
+    every: (n, baseDate = new Date(1970, 0, 1)) => date => (baseDate.getTime() - date.getTime()) / 86400000 % n === 0,
     leapYear: () => date => {
         const y = date.getFullYear();
         return y % 400 === 0 || y % 100 !== 0 && y % 4 === 0;
