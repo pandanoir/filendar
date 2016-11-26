@@ -1,6 +1,6 @@
-const SUN = 0;
-const MON = 1;
-const SAT = 6;
+import consts from './const.js';
+const {SUN, MON, SAT} = consts;
+
 export default {
     year: year => date => date.getFullYear() === year,
     month: month => date => date.getMonth() === month,
