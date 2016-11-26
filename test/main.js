@@ -7,14 +7,14 @@ const toDate = (year, month) => date => new Calendar.Date(year, month, date);
 describe('calendar.js', () => {
     describe('Date', () => {
         it('constructor', () => {
-            assert.ok(new Calendar.Date(2016, 11 - 1, 25).is(and(nthDay(4, FRI), and(year(2016), month(11 - 1)))));
+            assert.ok(new Calendar.Date(2016, 11 - 1, 25).is(filter.and(filter.nthDay(4, FRI), filter.and(filter.year(2016), filter.month(11 - 1)))));
         });
     });
     describe('Month', () => {
         it('constructor', () => {
-            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(day(FRI)), [4, 11, 18, 25].map(toDate(2016, 11 - 1)));
-            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(day(TUE)), [1, 8, 15, 22, 29].map(toDate(2016, 11 - 1)));
-            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(nthDay(1, TUE)), [1].map(toDate(2016, 11 - 1)));
+            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(filter.day(FRI)), [4, 11, 18, 25].map(toDate(2016, 11 - 1)));
+            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(filter.day(TUE)), [1, 8, 15, 22, 29].map(toDate(2016, 11 - 1)));
+            assert.deepEqual(new Calendar.Month(2016, 11 - 1).filter(filter.nthDay(1, TUE)), [1].map(toDate(2016, 11 - 1)));
         });
     });
     describe('Year', () => {
@@ -22,8 +22,8 @@ describe('calendar.js', () => {
         });
     });
     describe('filter', () => {
-        const ph1 = new Calendar.Year(2016).filter(publicHoliday());
-        const publicHolidays2 = new Calendar.Year(2017).filter(publicHoliday());
+        const ph1 = new Calendar.Year(2016).filter(filter.publicHoliday());
+        const publicHolidays2 = new Calendar.Year(2017).filter(filter.publicHoliday());
         it('year', () => {
             const year = filter.year.bind(filter);
             assert.equal(new Calendar.Year(2016).filter(year(2016)).length, 366);
@@ -51,12 +51,10 @@ describe('calendar.js', () => {
             assert.ok(new Calendar.Date(2016, 0, 11).is(nthDay(2, MON)));
         });
         it('and', () => {
-            const and = filter.and.bind(filter);
-            assert.deepEqual(new Calendar.Year(2016).filter(and(month(10 - 1), date(13))), [new Calendar.Date(2016, 10 - 1, 13)]);
+            assert.deepEqual(new Calendar.Year(2016).filter(filter.and(filter.month(10 - 1), filter.date(13))), [new Calendar.Date(2016, 10 - 1, 13)]);
         });
         it('or', () => {
-            const or = filter.or.bind(filter);
-            assert.deepEqual(new Calendar.Month(2016, 10 - 1).filter(or(day(FRI), date(13))), [
+            assert.deepEqual(new Calendar.Month(2016, 10 - 1).filter(filter.or(filter.day(FRI), filter.date(13))), [
                 new Calendar.Date(2016, 10 - 1, 7),
                 new Calendar.Date(2016, 10 - 1, 13),
                 new Calendar.Date(2016, 10 - 1, 14),
@@ -65,8 +63,7 @@ describe('calendar.js', () => {
             ]);
         });
         it('not', () => {
-            const not = filter.not.bind(filter);
-            assert.deepEqual(new Calendar.Month(2016, 10 - 1).filter(not(or(day(SAT), day(SUN)))), [3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31].map(toDate(2016, 10 - 1)));
+            assert.deepEqual(new Calendar.Month(2016, 10 - 1).filter(filter.not(filter.or(filter.day(SAT), filter.day(SUN)))), [3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31].map(toDate(2016, 10 - 1)));
         });
         it('since', () => {
             const since = filter.since.bind(filter);
