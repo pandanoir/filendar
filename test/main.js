@@ -67,15 +67,27 @@ describe('calendar.js', () => {
                 [new Calendar.Date(2016, 10 - 1, 13)]
             );
         });
+        it('nand', () => {
+            assert.deepEqual(
+                new Calendar.Month(2016, 10 - 1).filter(filter.nand(filter.day(SAT), filter.date(1))),
+                [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31].map(toDate(2016, 10 - 1))
+            );
+        });
         it('or', () => {
             assert.deepEqual(
                 new Calendar.Month(2016, 10 - 1).filter(filter.or(filter.day(FRI), filter.date(13))),
                 [7, 13, 14, 21, 28].map(toDate(2016, 10 - 1))
             );
         });
+        it('nor', () => {
+            assert.deepEqual(
+                new Calendar.Month(2016, 10 - 1).filter(filter.nor(filter.day(SAT), filter.day(SUN))),
+                [3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31].map(toDate(2016, 10 - 1))
+            );
+        });
         it('not', () => {
             assert.deepEqual(
-                new Calendar.Month(2016, 10 - 1).filter(filter.not(filter.or(filter.day(SAT), filter.day(SUN)))),
+                new Calendar.Month(2016, 10 - 1).filter(filter.and(filter.not(filter.day(SAT)), filter.not(filter.day(SUN)))),
                 [3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31].map(toDate(2016, 10 - 1))
             );
         });

@@ -7,8 +7,26 @@ export default {
     date: date => _date => _date.getDate() === date,
     day: day => date => date.getDay() === day,
     nthDay: (n, day) => date => date.getDay() === day && (0 | (date.getDate() - 1) / 7) === n - 1,
-    and: (...filters) => date => filters.reduce((res, filter) => res && filter(date), true),
-    or: (...filters) => date => filters.reduce((res, filter) => res || filter(date), false),
+    and: (...filters) => date => {
+        // filters.reduce((res, filter) => res && filter(date), true);
+        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](date)) return false;
+        return true;
+    },
+    nand: (...filters) => date => {
+        // filters.reduce((res, filter) => res || !Jfilter(date), false);
+        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](date)) return true;
+        return false;
+    },
+    or: (...filters) => date => {
+        // filters.reduce((res, filter) => res || filter(date), false);
+        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](date)) return true;
+        return false;
+    },
+    nor: (...filters) => date => {
+        // filters.reduce((res, filter) => res && !filter(date), true);
+        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](date)) return false;
+        return true;
+    },
     not: filter => date => !filter(date),
     since: since => date => since.getTime() <= date.getTime(),
     until: until => date => date.getTime() <= until.getTime(),
@@ -86,7 +104,7 @@ export default {
         return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(5 - 1), this.date(3))(date);
     },
     childrensDay() {
-       return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(5 - 1), this.date(5))(date);
+        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(5 - 1), this.date(5))(date);
     },
     marineDay() {
         return date => this.or(
@@ -95,7 +113,7 @@ export default {
         )(date);
     },
     mountainDay() {
-       return date => this.and(this.since(new Date(2016, 1 - 1, 1)), this.month(8 - 1), this.date(11))(date);
+        return date => this.and(this.since(new Date(2016, 1 - 1, 1)), this.month(8 - 1), this.date(11))(date);
     },
     respectForTheAgedDay() {
         return date => this.or(
@@ -110,10 +128,10 @@ export default {
         )(date);
     },
     cultureDay() {
-       return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(11 - 1), this.date(3))(date);
+        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(11 - 1), this.date(3))(date);
     },
     labourThanksgivingDay() {
-       return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(11 - 1), this.date(23))(date);
+        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(11 - 1), this.date(23))(date);
     },
     theEmperorsBirthday() {
         return date => this.or(
@@ -128,12 +146,10 @@ export default {
             this.newYearsDay(),
             this.comingOfAgeDay(),
             this.foundationDay(),
-
             this.greeneryDay(),
             this.showaDay(),
             this.constitutionMemorialDay(),
             this.childrensDay(),
-
             this.marineDay(),
             this.mountainDay(),
             this.respectForTheAgedDay(),
@@ -151,6 +167,6 @@ export default {
         }
     },
     weekday() {
-        return date => this.not(this.or(this.publicHoliday(), this.substituteHoliday(), this.day(SUN), this.day(SAT)))(date);
+        return date => this.nor(this.publicHoliday(), this.substituteHoliday(), this.day(SUN), this.day(SAT))(date);
     }
 };
