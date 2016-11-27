@@ -1,172 +1,174 @@
 import consts from './const.js';
 const {SUN, MON, SAT} = consts;
 
+const year = year => _date => _date.getFullYear() === year;
+const month = month => _date => _date.getMonth() === month;
+const date = date => _date => _date.getDate() === date;
+const day = day => _date => _date.getDay() === day;
+const nthDay = (n, day) => _date => _date.getDay() === day && (0 | (_date.getDate() - 1) / 7) === n - 1;
+const and = (...filters) => _date => {
+    // filters.reduce((res, filter) => res && filter(_date), true);
+    for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](_date)) return false;
+    return true;
+};
+const nand = (...filters) => _date => {
+    // filters.reduce((res, filter) => res || !Jfilter(_date), false);
+    for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](_date)) return true;
+    return false;
+};
+const or = (...filters) => _date => {
+    // filters.reduce((res, filter) => res || filter(_date), false);
+    for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](_date)) return true;
+    return false;
+};
+const nor = (...filters) => _date => {
+    // filters.reduce((res, filter) => res && !filter(_date), true);
+    for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](_date)) return false;
+    return true;
+};
+const not = filter => _date => !filter(_date);
+const since = since => _date => since.getTime() <= _date.getTime();
+const until = until => _date => _date.getTime() <= until.getTime();
+const range = (start, end) => _date => start.getTime() <= _date.getTime() && _date.getTime() <= end.getTime();
+const every = (n, baseDate = new Date(1970, 0, 1)) => _date => (baseDate.getTime() - _date.getTime()) / 86400000 % n === 0;
+const leapYear = () => _date => {
+    const y = _date.getFullYear();
+    return y % 400 === 0 || y % 100 !== 0 && y % 4 === 0;
+};
+const vernalEquinoxDay = () => _date => {
+    const y = _date.getFullYear();
+    const m = _date.getMonth();
+    const d = _date.getDate();
+    if (y < 1949 || m + 1 !== 3) return false; // 1949年以前は祝日ではなかった
+    if (y > 2030) return false; // 得られたデータが2030年までしかないからこうするしかない
+    return d === 20 + parseInt('1111111111101110111011101110111011101110111001100110011001100110011001100110001000'.charAt(y - 1949), 10);
+};
+const autumnalEquinoxDay = () => _date => {
+    const y = _date.getFullYear();
+    const m = _date.getMonth();
+    const d = _date.getDate();
+    if (y < 1948 || m + 1 !== 9) return false; // 1948年以前は祝日ではなかった
+    if (y > 2030) return false; // 得られたデータが2030年までしかないからこうするしかない
+    if (y % 4 === 3 && 1979 >= y && y >= 1951) return d === 24;
+    if (y % 4 === 0 && 2044 >= y && y >= 2012) return d === 22;
+    if (d === 23) return true;
+    return false;
+};
+const fullMoonNight = () => _date => {
+    const MEIGETSU = [
+        [27], [16], [5, 1], [24], [13], [2, 1], [22], [10], [29],
+        [18], [6, 1], [25], [15], [4, 1], [23], [12], [30], [19],
+        [8, 1], [26], [16], [5, 1], [25], [13], [2, 1], [21], [10],
+        [28], [17], [6, 1], [26], [15], [4, 1], [23], [12], [30],
+        [19], [8, 1], [27], [16], [5, 1], [25], [14], [1, 1], [20],
+        [10], [29], [17], [6, 1], [26], [15], [3, 1], [22], [11],
+        [30], [19], [8], [27], [17], [5, 1], [24], [13], [2, 1],
+        [20], [10], [29], [18], [6, 1], [26], [15], [3, 1], [22],
+        [11], [30], [20], [8], [27], [17], [5, 1], [23], [12],
+        [1, 1], [21], [10], [29], [18], [7, 1], [25], [14], [3, 1],
+        [22], [11], [30], [20], [9], [27], [16], [5, 1], [24],
+        [12], [1, 1], [21], [11], [28], [18], [6, 1], [25], [14],
+        [3, 1], [22], [12], [30], [19], [8], [27], [15], [4, 1],
+        [24], [13], [1, 1], [21], [10], [29], [17], [6, 1], [25],
+        [15], [3, 1], [22], [12]
+    ];
+    const y = _date.getFullYear();
+    const m = _date.getMonth();
+    const d = _date.getDate();
+    if(y < 1901 || y > 2030) return false;// データなし
+    return (MEIGETSU[y - 1901][1] || 0) + 8 === m && MEIGETSU[y-1901][0] === d;
+};
+const newYearsDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(1 - 1), date(1))(_date);
+const comingOfAgeDay = () => _date => or(
+        and(range(new Date(1948, 7 - 1, 20), new Date(1999, 12 - 1, 31)), month(1 - 1), date(15)),
+        and(since(new Date(2000, 1, 1)), month(1 - 1), nthDay(2, MON))
+    )(_date);
+const foundationDay = () => _date => and(since(new Date(1967, 1 - 1, 1)), month(2 - 1), date(11))(_date);
+const greeneryDay = () => _date => or(
+        and(range(new Date(1989, 1 - 1, 1), new Date(2006, 12 - 1, 31)), month(4 - 1), date(29)),
+        and(since(new Date(2007, 1 - 1, 1)), month(5 - 1), date(4))
+    )(_date);
+const showaDay = () => _date => and(since(new Date(2007, 1 - 1, 1)), month(4 - 1), date(29))(_date);
+const constitutionMemorialDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(5 - 1), date(3))(_date);
+const childrensDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(5 - 1), date(5))(_date);
+const marineDay = () => _date => or(
+        and(range(new Date(1996, 1 - 1, 1), new Date(2002, 12 - 1, 31)), month(7 - 1), date(20)),
+        and(since(new Date(2003, 1 - 1, 1)), month(7 - 1), nthDay(3, MON))
+    )(_date);
+const mountainDay = () => _date => and(since(new Date(2016, 1 - 1, 1)), month(8 - 1), date(11))(_date);
+const respectForTheAgedDay = () => _date => or(
+        and(range(new Date(1966, 1 - 1, 1), new Date(2002, 12 - 1, 31), month(9 - 1), date(15))),
+        and(since(new Date(2003, 1 - 1, 1)), month(9 - 1), nthDay(3, MON))
+    )(_date);
+const healthAndSportsDay = () => _date => or(
+        and(range(new Date(1966, 1 - 1, 1), new Date(1999, 12 - 1, 31)), month(10 - 1), date(10)),
+        and(since(new Date(2000, 1 - 1, 1)), month(10 - 1), nthDay(2, MON))
+    )(_date);
+const cultureDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(3))(_date);
+const labourThanksgivingDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(23))(_date);
+const theEmperorsBirthday = () => _date => or(
+        and(range(new Date(1948, 7 - 1, 20), new Date(1988, 12 - 1, 31)), month(4 - 1), date(29)),
+        and(since(new Date(1989, 1 - 1, 1)), month(12 - 1), date(23))
+    )(_date);
+const publicHoliday = () => _date => or(
+        vernalEquinoxDay(),
+        autumnalEquinoxDay(),
+        newYearsDay(),
+        comingOfAgeDay(),
+        foundationDay(),
+        greeneryDay(),
+        showaDay(),
+        constitutionMemorialDay(),
+        childrensDay(),
+        marineDay(),
+        mountainDay(),
+        respectForTheAgedDay(),
+        healthAndSportsDay(),
+        cultureDay(),
+        labourThanksgivingDay(),
+        theEmperorsBirthday()
+    )(_date);
+const substituteHoliday = () => _date => {
+        const yesterday = new Date(_date.getTime());
+        yesterday.setDate(yesterday.getDate() - 1);
+        return and(publicHoliday(), day(SUN))(yesterday);
+    };
+const weekday = () => _date => nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT))(_date);
+
 export default {
-    year: year => date => date.getFullYear() === year,
-    month: month => date => date.getMonth() === month,
-    date: date => _date => _date.getDate() === date,
-    day: day => date => date.getDay() === day,
-    nthDay: (n, day) => date => date.getDay() === day && (0 | (date.getDate() - 1) / 7) === n - 1,
-    and: (...filters) => date => {
-        // filters.reduce((res, filter) => res && filter(date), true);
-        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](date)) return false;
-        return true;
-    },
-    nand: (...filters) => date => {
-        // filters.reduce((res, filter) => res || !Jfilter(date), false);
-        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](date)) return true;
-        return false;
-    },
-    or: (...filters) => date => {
-        // filters.reduce((res, filter) => res || filter(date), false);
-        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](date)) return true;
-        return false;
-    },
-    nor: (...filters) => date => {
-        // filters.reduce((res, filter) => res && !filter(date), true);
-        for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](date)) return false;
-        return true;
-    },
-    not: filter => date => !filter(date),
-    since: since => date => since.getTime() <= date.getTime(),
-    until: until => date => date.getTime() <= until.getTime(),
-    range: (start, end) => date => start.getTime() <= date.getTime() && date.getTime() <= end.getTime(),
-    every: (n, baseDate = new Date(1970, 0, 1)) => date => (baseDate.getTime() - date.getTime()) / 86400000 % n === 0,
-    leapYear: () => date => {
-        const y = date.getFullYear();
-        return y % 400 === 0 || y % 100 !== 0 && y % 4 === 0;
-    },
-    vernalEquinoxDay: () => date => {
-        const y = date.getFullYear();
-        const m = date.getMonth();
-        const d = date.getDate();
-        if (y < 1949 || m + 1 !== 3) return false; // 1949年以前は祝日ではなかった
-        if (y > 2030) return false; // 得られたデータが2030年までしかないからこうするしかない
-        return d === 20 + parseInt('1111111111101110111011101110111011101110111001100110011001100110011001100110001000'.charAt(y - 1949), 10);
-    },
-    autumnalEquinoxDay: () => date => {
-        const y = date.getFullYear();
-        const m = date.getMonth();
-        const d = date.getDate();
-        if (y < 1948 || m + 1 !== 9) return false; // 1948年以前は祝日ではなかった
-        if (y > 2030) return false; // 得られたデータが2030年までしかないからこうするしかない
-        if (y % 4 === 3 && 1979 >= y && y >= 1951) return d === 24;
-        if (y % 4 === 0 && 2044 >= y && y >= 2012) return d === 22;
-        if (d === 23) return true;
-        return false;
-    },
-    fullMoonNight: () => date => {
-        const MEIGETSU = [
-            {d: 27}, {d: 16}, {m: 9, d: 5}, {d: 24}, {d: 13}, {m: 9, d: 2}, {d: 22}, {d: 10}, {d: 29},
-            {d: 18}, {m: 9, d: 6}, {d: 25}, {d: 15}, {m: 9, d: 4}, {d: 23}, {d: 12}, {d: 30}, {d: 19},
-            {m: 9, d: 8}, {d: 26}, {d: 16}, {m: 9, d: 5}, {d: 25}, {d: 13}, {m: 9, d: 2}, {d: 21}, {d: 10},
-            {d: 28}, {d: 17}, {m: 9, d: 6}, {d: 26}, {d: 15}, {m: 9, d: 4}, {d: 23}, {d: 12}, {d: 30},
-            {d: 19}, {m: 9, d: 8}, {d: 27}, {d: 16}, {m: 9, d: 5}, {d: 25}, {d: 14}, {m: 9, d: 1}, {d: 20},
-            {d: 10}, {d: 29}, {d: 17}, {m: 9, d: 6}, {d: 26}, {d: 15}, {m: 9, d: 3}, {d: 22}, {d: 11},
-            {d: 30}, {d: 19}, {d: 8}, {d: 27}, {d: 17}, {m: 9, d: 5}, {d: 24}, {d: 13}, {m: 9, d: 2},
-            {d: 20}, {d: 10}, {d: 29}, {d: 18}, {m: 9, d: 6}, {d: 26}, {d: 15}, {m: 9, d: 3}, {d: 22},
-            {d: 11}, {d: 30}, {d: 20}, {d: 8}, {d: 27}, {d: 17}, {m: 9, d: 5}, {d: 23}, {d: 12},
-            {m: 9, d: 1}, {d: 21}, {d: 10}, {d: 29}, {d: 18}, {m: 9, d: 7}, {d: 25}, {d: 14}, {m: 9, d: 3},
-            {d: 22}, {d: 11}, {d: 30}, {d: 20}, {d: 9}, {d: 27}, {d: 16}, {m: 9, d: 5}, {d: 24},
-            {d: 12}, {m: 9, d: 1}, {d: 21}, {d: 11}, {d: 28}, {d: 18}, {m: 9, d: 6}, {d: 25}, {d: 14},
-            {m: 9, d: 3}, {d: 22}, {d: 12}, {d: 30}, {d: 19}, {d: 8}, {d: 27}, {d: 15}, {m: 9, d: 4},
-            {d: 24}, {d: 13}, {m: 9, d: 1}, {d: 21}, {d: 10}, {d: 29}, {d: 17}, {m: 9, d: 6}, {d: 25},
-            {d: 15}, {m: 9, d: 3}, {d: 22}, {d: 12}
-        ];
-        const y = date.getFullYear();
-        const m = date.getMonth();
-        const d = date.getDate();
-        if(y < 1901 || y > 2030) return false;// データなし
-        return (!MEIGETSU[y - 1901].m && m === 8 || MEIGETSU[y - 1901].m === m) && MEIGETSU[y-1901].d === d;
-    },
-    newYearsDay() {
-        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(1 - 1), this.date(1))(date);
-    },
-    comingOfAgeDay(){
-        return date => this.or(
-            this.and(this.range(new Date(1948, 7 - 1, 20), new Date(1999, 12 - 1, 31)), this.month(1 - 1), this.date(15)),
-            this.and(this.since(new Date(2000, 1, 1)), this.month(1 - 1), this.nthDay(2, MON))
-        )(date);
-    },
-    foundationDay() {
-        return date => this.and(this.since(new Date(1967, 1 - 1, 1)), this.month(2 - 1), this.date(11))(date);
-    },
-    greeneryDay() {
-        return date => this.or(
-            this.and(this.range(new Date(1989, 1 - 1, 1), new Date(2006, 12 - 1, 31)), this.month(4 - 1), this.date(29)),
-            this.and(this.since(new Date(2007, 1 - 1, 1)), this.month(5 - 1), this.date(4))
-        )(date);
-    },
-    showaDay() {
-        return date => this.and(this.since(new Date(2007, 1 - 1, 1)), this.month(4 - 1), this.date(29))(date);
-    },
-    constitutionMemorialDay() {
-        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(5 - 1), this.date(3))(date);
-    },
-    childrensDay() {
-        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(5 - 1), this.date(5))(date);
-    },
-    marineDay() {
-        return date => this.or(
-            this.and(this.range(new Date(1996, 1 - 1, 1), new Date(2002, 12 - 1, 31)), this.month(7 - 1), this.date(20)),
-            this.and(this.since(new Date(2003, 1 - 1, 1)), this.month(7 - 1), this.nthDay(3, MON))
-        )(date);
-    },
-    mountainDay() {
-        return date => this.and(this.since(new Date(2016, 1 - 1, 1)), this.month(8 - 1), this.date(11))(date);
-    },
-    respectForTheAgedDay() {
-        return date => this.or(
-            this.and(this.range(new Date(1966, 1 - 1, 1), new Date(2002, 12 - 1, 31), this.month(9 - 1), this.date(15))),
-            this.and(this.since(new Date(2003, 1 - 1, 1)), this.month(9 - 1), this.nthDay(3, MON))
-        )(date);
-    },
-    healthAndSportsDay() {
-        return date => this.or(
-            this.and(this.range(new Date(1966, 1 - 1, 1), new Date(1999, 12 - 1, 31)), this.month(10 - 1), this.date(10)),
-            this.and(this.since(new Date(2000, 1 - 1, 1)), this.month(10 - 1), this.nthDay(2, MON))
-        )(date);
-    },
-    cultureDay() {
-        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(11 - 1), this.date(3))(date);
-    },
-    labourThanksgivingDay() {
-        return date => this.and(this.since(new Date(1948, 7 - 1, 20)), this.month(11 - 1), this.date(23))(date);
-    },
-    theEmperorsBirthday() {
-        return date => this.or(
-            this.and(this.range(new Date(1948, 7 - 1, 20), new Date(1988, 12 - 1, 31)), this.month(4 - 1), this.date(29)),
-            this.and(this.since(new Date(1989, 1 - 1, 1)), this.month(12 - 1), this.date(23))
-        )(date);
-    },
-    publicHoliday() {
-        return date => this.or(
-            this.vernalEquinoxDay(),
-            this.autumnalEquinoxDay(),
-            this.newYearsDay(),
-            this.comingOfAgeDay(),
-            this.foundationDay(),
-            this.greeneryDay(),
-            this.showaDay(),
-            this.constitutionMemorialDay(),
-            this.childrensDay(),
-            this.marineDay(),
-            this.mountainDay(),
-            this.respectForTheAgedDay(),
-            this.healthAndSportsDay(),
-            this.cultureDay(),
-            this.labourThanksgivingDay(),
-            this.theEmperorsBirthday()
-        )(date);
-    },
-    substituteHoliday() {
-        return date => {
-            const yesterday = new Date(date.getTime());
-            yesterday.setDate(yesterday.getDate() - 1);
-            return this.and(this.publicHoliday(), this.day(SUN))(yesterday);
-        }
-    },
-    weekday() {
-        return date => this.nor(this.publicHoliday(), this.substituteHoliday(), this.day(SUN), this.day(SAT))(date);
-    }
+    year: year,
+    month: month,
+    date: date,
+    day: day,
+    nthDay: nthDay,
+    and: and,
+    nand: nand,
+    or: or,
+    nor: nor,
+    not: not,
+    since: since,
+    until: until,
+    range: range,
+    every: every,
+    leapYear: leapYear,
+    vernalEquinoxDay: vernalEquinoxDay,
+    autumnalEquinoxDay: autumnalEquinoxDay,
+    fullMoonNight: fullMoonNight,
+    newYearsDay: newYearsDay,
+    comingOfAgeDay: comingOfAgeDay,
+    foundationDay: foundationDay,
+    greeneryDay: greeneryDay,
+    showaDay: showaDay,
+    constitutionMemorialDay: constitutionMemorialDay,
+    childrensDay: childrensDay,
+    marineDay: marineDay,
+    mountainDay: mountainDay,
+    respectForTheAgedDay: respectForTheAgedDay,
+    healthAndSportsDay: healthAndSportsDay,
+    cultureDay: cultureDay,
+    labourThanksgivingDay: labourThanksgivingDay,
+    theEmperorsBirthday: theEmperorsBirthday,
+    publicHoliday: publicHoliday,
+    substituteHoliday: substituteHoliday,
+    weekday: weekday
 };
