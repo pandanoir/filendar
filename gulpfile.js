@@ -1,18 +1,16 @@
 const gulp = require('gulp');
-const closureCompiler = require('gulp-closure-compiler');
+const closureCompiler = require('google-closure-compiler').gulp();
 
 gulp.task('minify', () => {
-    const flags = {
-            compilation_level: 'SIMPLE_OPTIMIZATIONS',
-            language_in: 'ECMASCRIPT6_STRICT',
-            language_out: 'ECMASCRIPT5_STRICT',
-            warning_level: 'QUIET'
-        };
     gulp.src('./dist/calendar.js')
     .pipe(closureCompiler({
-        fileName: 'calendar.min.js',
-        compilerFlags: flags
+        js_output_file: 'calendar.min.js',
+        compilation_level: 'SIMPLE_OPTIMIZATIONS',
+        language_in: 'ECMASCRIPT6_STRICT',
+        language_out: 'ECMASCRIPT5_STRICT',
+        warning_level: 'QUIET'
     }))
     .pipe(gulp.dest('./dist/'));
 });
 gulp.task('default', ['minify']);
+

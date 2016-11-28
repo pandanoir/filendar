@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/pandanoir/calendar.js#readme",
   "devDependencies": {
+    "google-closure-compiler": "20161024.3.0",
     "gulp": "3.9.1",
-    "gulp-closure-compiler": "0.4.0",
     "mocha": "3.2.0",
     "rollup": "0.36.4"
   }
