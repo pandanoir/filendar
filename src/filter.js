@@ -78,39 +78,39 @@ const fullMoonNight = () => _date => {
     if(y < 1901 || y > 2030) return false;// データなし
     return (MEIGETSU[y - 1901][1] || 0) + 8 === m && MEIGETSU[y-1901][0] === d;
 };
-const newYearsDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(1 - 1), date(1))(_date);
-const comingOfAgeDay = () => _date => or(
+const newYearsDay = () => and(since(new Date(1948, 7 - 1, 20)), month(1 - 1), date(1));
+const comingOfAgeDay = () => or(
         and(range(new Date(1948, 7 - 1, 20), new Date(1999, 12 - 1, 31)), month(1 - 1), date(15)),
         and(since(new Date(2000, 1, 1)), month(1 - 1), nthDay(2, MON))
-    )(_date);
-const foundationDay = () => _date => and(since(new Date(1967, 1 - 1, 1)), month(2 - 1), date(11))(_date);
-const greeneryDay = () => _date => or(
+    );
+const foundationDay = () => and(since(new Date(1967, 1 - 1, 1)), month(2 - 1), date(11));
+const greeneryDay = () => or(
         and(range(new Date(1989, 1 - 1, 1), new Date(2006, 12 - 1, 31)), month(4 - 1), date(29)),
         and(since(new Date(2007, 1 - 1, 1)), month(5 - 1), date(4))
-    )(_date);
-const showaDay = () => _date => and(since(new Date(2007, 1 - 1, 1)), month(4 - 1), date(29))(_date);
-const constitutionMemorialDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(5 - 1), date(3))(_date);
-const childrensDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(5 - 1), date(5))(_date);
-const marineDay = () => _date => or(
+    );
+const showaDay = () => and(since(new Date(2007, 1 - 1, 1)), month(4 - 1), date(29));
+const constitutionMemorialDay = () => and(since(new Date(1948, 7 - 1, 20)), month(5 - 1), date(3));
+const childrensDay = () => and(since(new Date(1948, 7 - 1, 20)), month(5 - 1), date(5));
+const marineDay = () => or(
         and(range(new Date(1996, 1 - 1, 1), new Date(2002, 12 - 1, 31)), month(7 - 1), date(20)),
         and(since(new Date(2003, 1 - 1, 1)), month(7 - 1), nthDay(3, MON))
-    )(_date);
-const mountainDay = () => _date => and(since(new Date(2016, 1 - 1, 1)), month(8 - 1), date(11))(_date);
-const respectForTheAgedDay = () => _date => or(
+    );
+const mountainDay = () => and(since(new Date(2016, 1 - 1, 1)), month(8 - 1), date(11));
+const respectForTheAgedDay = () => or(
         and(range(new Date(1966, 1 - 1, 1), new Date(2002, 12 - 1, 31), month(9 - 1), date(15))),
         and(since(new Date(2003, 1 - 1, 1)), month(9 - 1), nthDay(3, MON))
-    )(_date);
-const healthAndSportsDay = () => _date => or(
+    );
+const healthAndSportsDay = () => or(
         and(range(new Date(1966, 1 - 1, 1), new Date(1999, 12 - 1, 31)), month(10 - 1), date(10)),
         and(since(new Date(2000, 1 - 1, 1)), month(10 - 1), nthDay(2, MON))
-    )(_date);
-const cultureDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(3))(_date);
-const labourThanksgivingDay = () => _date => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(23))(_date);
-const theEmperorsBirthday = () => _date => or(
+    );
+const cultureDay = () => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(3));
+const labourThanksgivingDay = () => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(23));
+const theEmperorsBirthday = () => or(
         and(range(new Date(1948, 7 - 1, 20), new Date(1988, 12 - 1, 31)), month(4 - 1), date(29)),
         and(since(new Date(1989, 1 - 1, 1)), month(12 - 1), date(23))
-    )(_date);
-const publicHoliday = () => _date => or(
+    );
+const publicHoliday = () => or(
         vernalEquinoxDay(),
         autumnalEquinoxDay(),
         newYearsDay(),
@@ -127,13 +127,13 @@ const publicHoliday = () => _date => or(
         cultureDay(),
         labourThanksgivingDay(),
         theEmperorsBirthday()
-    )(_date);
+    );
 const substituteHoliday = () => _date => {
         const yesterday = new Date(_date.getTime());
         yesterday.setDate(yesterday.getDate() - 1);
         return and(publicHoliday(), day(SUN))(yesterday);
     };
-const weekday = () => _date => nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT))(_date);
+const weekday = () => nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT));
 
 export default {
     year: year,
