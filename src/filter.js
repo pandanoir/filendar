@@ -1,4 +1,6 @@
 import consts from './const.js';
+import _Date from './date.js';
+
 const {SUN, MON, SAT} = consts;
 
 const year = year => _date => _date.getFullYear() === year;
@@ -129,9 +131,13 @@ const publicHoliday = () => or(
         theEmperorsBirthday()
     );
 const substituteHoliday = () => _date => {
-        const yesterday = new Date(_date.getTime());
+        const yesterday = new _Date(_date.getTime());
         yesterday.setDate(yesterday.getDate() - 1);
-        return and(publicHoliday(), day(SUN))(yesterday);
+        while (yesterday.is(publicHoliday())) {
+            if (yesterday.is(day(SUN))) return true;
+            yesterday.setDate(yesterday.getDate() - 1);
+        }
+        return false;
     };
 const weekday = () => nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT));
 

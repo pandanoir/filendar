@@ -224,10 +224,15 @@ describe('calendar.js', () => {
                 new Calendar.Date(2016, 12 - 1, 23)
             ]);
         });
-        it('substituteHoliday', () => assert.deepEqual(
-            new Calendar.Year(2016).filter(filter.substituteHoliday()),
-            [new Calendar.Date(2016, 3 - 1, 21)]
-        ));
+        it('substituteHoliday', () => {
+            assert.deepEqual(
+                new Calendar.Year(2016).filter(filter.substituteHoliday()),
+                [new Calendar.Date(2016, 3 - 1, 21)]
+            );
+            assert.ok(new Calendar.Date(1981, 5 - 1, 4).is(filter.substituteHoliday()));
+            assert.ok(new Calendar.Date(2008, 5 - 1, 6).is(filter.substituteHoliday()));
+            assert.ok(new Calendar.Date(2009, 5 - 1, 6).is(filter.substituteHoliday()));
+        });
         it('weekday', () => {
             const res = [];
             for (let i = 0; i < 12; i++) res.push(new Calendar.Month(2016, i).filter(filter.weekday()).length);
