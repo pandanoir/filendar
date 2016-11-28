@@ -229,9 +229,50 @@ describe('calendar.js', () => {
                 new Calendar.Year(2016).filter(filter.substituteHoliday()),
                 [new Calendar.Date(2016, 3 - 1, 21)]
             );
-            assert.ok(new Calendar.Date(1981, 5 - 1, 4).is(filter.substituteHoliday()));
-            assert.ok(new Calendar.Date(2008, 5 - 1, 6).is(filter.substituteHoliday()));
-            assert.ok(new Calendar.Date(2009, 5 - 1, 6).is(filter.substituteHoliday()));
+            const substituteHoliday = filter.substituteHoliday();
+
+            assert.ok(new Calendar.Date(1981, 5 - 1, 4).is(substituteHoliday));
+            assert.ok(new Calendar.Date(2008, 5 - 1, 6).is(substituteHoliday));
+            assert.ok(new Calendar.Date(2009, 5 - 1, 6).is(substituteHoliday));
+
+            assert.equal(new Calendar.Year(1973).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1974).filter(substituteHoliday).length, 3);
+            assert.equal(new Calendar.Year(1975).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1976).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1978).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1979).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1980).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1981).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1982).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1984).filter(substituteHoliday).length, 4);
+            assert.equal(new Calendar.Year(1985).filter(substituteHoliday).length, 3);
+            assert.equal(new Calendar.Year(1986).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1987).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1988).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1989).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1990).filter(substituteHoliday).length, 4);
+            assert.equal(new Calendar.Year(1991).filter(substituteHoliday).length, 3);
+            assert.equal(new Calendar.Year(1992).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1993).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1995).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1996).filter(substituteHoliday).length, 4);
+            assert.equal(new Calendar.Year(1997).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(1998).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(1999).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(2001).filter(substituteHoliday).length, 4);
+            assert.equal(new Calendar.Year(2002).filter(substituteHoliday).length, 3);
+            assert.equal(new Calendar.Year(2003).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(2005).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(2006).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(2007).filter(substituteHoliday).length, 4);
+            assert.equal(new Calendar.Year(2008).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(2009).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(2010).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(2012).filter(substituteHoliday).length, 3);
+            assert.equal(new Calendar.Year(2013).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(2014).filter(substituteHoliday).length, 2);
+            assert.equal(new Calendar.Year(2015).filter(substituteHoliday).length, 1);
+            assert.equal(new Calendar.Year(2016).filter(substituteHoliday).length, 1);
         });
         it('weekday', () => {
             const res = [];

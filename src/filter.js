@@ -99,7 +99,7 @@ const marineDay = () => or(
     );
 const mountainDay = () => and(since(new Date(2016, 1 - 1, 1)), month(8 - 1), date(11));
 const respectForTheAgedDay = () => or(
-        and(range(new Date(1966, 1 - 1, 1), new Date(2002, 12 - 1, 31), month(9 - 1), date(15))),
+        and(range(new Date(1966, 1 - 1, 1), new Date(2002, 12 - 1, 31)), month(9 - 1), date(15)),
         and(since(new Date(2003, 1 - 1, 1)), month(9 - 1), nthDay(3, MON))
     );
 const healthAndSportsDay = () => or(
@@ -131,9 +131,12 @@ const publicHoliday = () => or(
         theEmperorsBirthday()
     );
 const substituteHoliday = () => _date => {
-        if (_date.is(publicHoliday())) return false;
+        if (new _Date(_date.getTime()).is(or(until(new Date(1973, 4 - 1, 12)), publicHoliday()))) return false;
         const yesterday = new _Date(_date.getTime());
         yesterday.setDate(yesterday.getDate() - 1);
+        if (new _Date(_date.getTime()).is(until(new Date(2007, 1 - 1, 1)))) {
+            return yesterday.is(and(day(SUN), publicHoliday()));
+        }
         while (yesterday.is(publicHoliday())) {
             if (yesterday.is(day(SUN))) return true;
             yesterday.setDate(yesterday.getDate() - 1);
