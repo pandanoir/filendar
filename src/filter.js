@@ -131,6 +131,7 @@ const publicHoliday = () => or(
         theEmperorsBirthday()
     );
 const substituteHoliday = () => _date => {
+        if (_date.is(publicHoliday())) return false;
         const yesterday = new _Date(_date.getTime());
         yesterday.setDate(yesterday.getDate() - 1);
         while (yesterday.is(publicHoliday())) {
