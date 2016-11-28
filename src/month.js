@@ -2,6 +2,8 @@ import _Date from './date.js';
 
 export default class Month {
     constructor(year, month) {
+        if (year == null) year = new Date().getFullYear();
+        if (month == null) month = new Date().getMonth();
         this.year = year;
         this.month = month;
         this.lastDate = new Date(year, month + 1, 0).getDate();
