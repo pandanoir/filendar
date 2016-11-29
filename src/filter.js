@@ -115,10 +115,8 @@ const theEmperorsBirthday = () => or(
 const citizensHoliday = () => _date => {
     if (until(new Date(1985, 12 - 1,27))(_date)) return false;
     if (!nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT))(_date)) return false;
-    const yesterday = new _Date(_date.getTime());
-    const tomorrow = new _Date(_date.getTime());
-    yesterday.setDate(yesterday.getDate() - 1);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const yesterday = new _Date(_date.getTime()).setDate(_date.getDate() - 1);
+    const tomorrow = new _Date(_date.getTime()).setDate(_date.getDate() + 1);
     return yesterday.is(publicHoliday()) && tomorrow.is(publicHoliday());
 }
 const publicHoliday = () => or(
@@ -141,14 +139,13 @@ const publicHoliday = () => or(
     );
 const substituteHoliday = () => _date => {
         if (or(until(new Date(1973, 4 - 1, 12)), publicHoliday())(_date)) return false;
-        const yesterday = new _Date(_date.getTime());
-        yesterday.setDate(yesterday.getDate() - 1);
+        let yesterday = new _Date(_date.getTime()).setDate(_date.getDate() - 1);
         if (until(new Date(2007, 1 - 1, 1))(_date)) {
             return yesterday.is(and(day(SUN), publicHoliday()));
         }
         while (yesterday.is(publicHoliday())) {
             if (yesterday.is(day(SUN))) return true;
-            yesterday.setDate(yesterday.getDate() - 1);
+            yesterday = yesterday.setDate(yesterday.getDate() - 1);
         }
         return false;
     };
