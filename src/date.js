@@ -11,8 +11,7 @@ for (const val of ['Date', 'FullYear', 'Hours', 'Milliseconds', 'Minutes', 'Mont
     _Date.prototype['get' + val] = function () {return this.date['get' + val]();};
     _Date.prototype['set' + val] = function (...args) {
         const newDate = new Date(this.date.getTime());
-        newDate['set' + val].apply(newDate, args);
-        return new _Date(newDate.getTime());
+        return new _Date(newDate['set' + val].apply(newDate, args));
     };
 }
 for (const val of ['Day', 'TimezoneOffset', 'UTCDay']) {
