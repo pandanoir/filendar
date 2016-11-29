@@ -4,8 +4,9 @@ export default class Month {
     constructor(year, month) {
         if (year == null) year = new Date().getFullYear();
         if (month == null) month = new Date().getMonth();
-        this.year = year;
-        this.month = month;
+        const firstDate = new Date(year, month, 1);
+        this.year = firstDate.getFullYear();
+        this.month = firstDate.getMonth();
         this.lastDate = new Date(year, month + 1, 0).getDate();
         this.weeks = null;
     }
