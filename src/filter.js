@@ -112,6 +112,15 @@ const theEmperorsBirthday = () => or(
         and(range(new Date(1948, 7 - 1, 20), new Date(1988, 12 - 1, 31)), month(4 - 1), date(29)),
         and(since(new Date(1989, 1 - 1, 1)), month(12 - 1), date(23))
     );
+const citizensHoliday = () => _date => {
+    if (until(new Date(1985, 12 - 1,27))(_date)) return false;
+    if (!nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT))(_date)) return false;
+    const yesterday = new _Date(_date.getTime());
+    const tomorrow = new _Date(_date.getTime());
+    yesterday.setDate(yesterday.getDate() - 1);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return yesterday.is(publicHoliday()) && tomorrow.is(publicHoliday());
+}
 const publicHoliday = () => or(
         vernalEquinoxDay(),
         autumnalEquinoxDay(),
@@ -131,10 +140,10 @@ const publicHoliday = () => or(
         theEmperorsBirthday()
     );
 const substituteHoliday = () => _date => {
-        if (new _Date(_date.getTime()).is(or(until(new Date(1973, 4 - 1, 12)), publicHoliday()))) return false;
+        if (or(until(new Date(1973, 4 - 1, 12)), publicHoliday())(_date)) return false;
         const yesterday = new _Date(_date.getTime());
         yesterday.setDate(yesterday.getDate() - 1);
-        if (new _Date(_date.getTime()).is(until(new Date(2007, 1 - 1, 1)))) {
+        if (until(new Date(2007, 1 - 1, 1))(_date)) {
             return yesterday.is(and(day(SUN), publicHoliday()));
         }
         while (yesterday.is(publicHoliday())) {
@@ -143,7 +152,7 @@ const substituteHoliday = () => _date => {
         }
         return false;
     };
-const weekday = () => nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT));
+const weekday = () => nor(publicHoliday(), substituteHoliday(), citizensHoliday(), day(SUN), day(SAT));
 
 export default {
     year: year,
@@ -180,5 +189,6 @@ export default {
     theEmperorsBirthday: theEmperorsBirthday,
     publicHoliday: publicHoliday,
     substituteHoliday: substituteHoliday,
+    citizensHoliday: citizensHoliday,
     weekday: weekday
 };

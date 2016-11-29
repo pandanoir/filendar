@@ -274,6 +274,13 @@ describe('calendar.js', () => {
             assert.equal(new Calendar.Year(2015).filter(substituteHoliday).length, 1);
             assert.equal(new Calendar.Year(2016).filter(substituteHoliday).length, 1);
         });
+        it('citizensHoliday', () => {
+            assert.ok(!new Calendar.Date(1985, 5 - 1, 4).is(filter.citizensHoliday()));
+            assert.ok(!new Calendar.Date(1986, 5 - 1, 4).is(filter.citizensHoliday()));
+            assert.ok(!new Calendar.Date(1987, 5 - 1, 4).is(filter.citizensHoliday()));
+            assert.ok(new Calendar.Date(1988, 5 - 1, 4).is(filter.citizensHoliday()));
+            assert.ok(new Calendar.Date(2009, 9 - 1, 22).is(filter.citizensHoliday()));
+        });
         it('weekday', () => {
             const res = [];
             for (let i = 0; i < 12; i++) res.push(new Calendar.Month(2016, i).filter(filter.weekday()).length);
