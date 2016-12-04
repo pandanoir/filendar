@@ -45,7 +45,6 @@ DateクラスはビルトインオブジェクトのDateとほぼ同じ挙動を
 ## 祝日フィルタ
 * vernalEquinoxDay(): 春分の日である
 * autumnalEquinoxDay(): 秋分の日である
-* fullMoonNight(): 十五夜である
 * newYearsDay(): 元旦である
 * comingOfAgeDay(): 成人の日である
 * foundationDay(): 建国記念の日である
@@ -64,6 +63,7 @@ DateクラスはビルトインオブジェクトのDateとほぼ同じ挙動を
 
 ## その他のフィルタ
 
+* fullMoonNight(): 十五夜である
 * substituteHoliday(): 振替休日である
 * citizensHoliday(): 国民の休日である
 * weekday(): 平日である
