@@ -1,24 +1,24 @@
 {
-  "name": "calendar.js",
+  "name": "filendar",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/calendar.js",
+  "main": "dist/filendar.js",
   "scripts": {
     "pretest": "npm run build",
     "test": "mocha -R spec",
-    "build": "rollup src/main.js -c -o dist/calendar.js --name Calendar",
+    "build": "rollup src/main.js -c -o dist/filendar.js --name Calendar",
     "compress": "gulp"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://pandanoir@github.com/pandanoir/calendar.js.git"
+    "url": "git+https://pandanoir@github.com/pandanoir/filendar.git"
   },
   "author": "Naoto Ikuno <moon_in_france@yahoo.co.jp>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pandanoir/calendar.js/issues"
+    "url": "https://github.com/pandanoir/filendar/issues"
   },
-  "homepage": "https://github.com/pandanoir/calendar.js#readme",
+  "homepage": "https://github.com/pandanoir/filendar#readme",
   "devDependencies": {
     "google-closure-compiler": "20161024.3.0",
     "gulp": "3.9.1",

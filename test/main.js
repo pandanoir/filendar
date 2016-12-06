@@ -1,10 +1,10 @@
 const assert = require('assert');
-const Calendar = require('../dist/calendar.js');
+const Calendar = require('../dist/filendar.js');
 const {filter, SUNDAY, MONDAY, TUEDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUN, MON, TUE, WED, THU, FRI, SAT} = Calendar;
 
 const toDate = (year, month) => date => new Calendar.Date(year, month, date);
 
-describe('calendar.js', () => {
+describe('filendar', () => {
     describe('Date', () => {
         it('constructor', () => {
             assert.ok(new Calendar.Date(2016, 11 - 1, 25).is(

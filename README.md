@@ -1,17 +1,17 @@
-# calendar.js
-calendar.jsはカレンダー上の日付へフィルタリングをするライブラリです。
+# filendar
+filendarはカレンダー上の日付へフィルタリングをするライブラリです。
 
 例えば、次のコードで2016年の5月の平日を求めることができます。
 
 ```javascript
-const Calendar = requie('calendar.js');
+const Calendar = requie('filendar');
 new Calendar.Month(2016, 5 - 1).filter(Calendar.filter.weekday());
 ```
 
 (平日とは、祝日でなく、振替休日でなく、国民の休日でなく、土日でない日のことを指します)
 
 # クラス
-calendar.jsにはYearクラス、Monthクラス、Dateクラスがあります。
+filendarにはYearクラス、Monthクラス、Dateクラスがあります。
 
 Yearクラス、Monthクラスはfilter()を持っています。
 

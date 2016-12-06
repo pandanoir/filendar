@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const closureCompiler = require('google-closure-compiler').gulp();
 
 gulp.task('minify', () => {
-    gulp.src('./dist/calendar.js')
+    gulp.src('./dist/filendar.js')
     .pipe(closureCompiler({
         js_output_file: 'calendar.min.js',
         compilation_level: 'SIMPLE_OPTIMIZATIONS',
