@@ -8,7 +8,7 @@ export default class Month {
         this.year = firstDate.getFullYear();
         this.month = firstDate.getMonth();
         this.lastDate = new Date(year, month + 1, 0).getDate();
-        this.weeks = null;
+        this._weeks = null;
     }
     filter(filter) {
         const res = [];
@@ -20,13 +20,13 @@ export default class Month {
         return res;
     }
     getWeeks() {
-        if (this.weeks !== null) return this.weeks;
-        this.weeks = [];
+        if (this._weeks !== null) return this._weeks;
+        this._weeks = [];
         let week = [];
         for (let i = 1 - new Date(this.year, this.month, 1).getDay(); i <= this.lastDate; i = 0 | i + 1) {
             week[week.length] = i > 0 ? i : 0;
             if (week.length === 7) {
-                this.weeks.push(week);
+                this._weeks[ths._weeks.length] = week;
                 week = [];
             }
         }
@@ -34,9 +34,9 @@ export default class Month {
             while (week.length !== 7) {
                 week[week.length] = 0;
             }
-            this.weeks.push(week);
+            this._weeks[this._weeks.length] = week;
             week = [];
         }
-        return this.weeks;
+        return this._weeks;
     }
 }
