@@ -22,12 +22,12 @@ DateクラスはビルトインオブジェクトのDateとほぼ同じ挙動を
 
 ## 基本フィルタ
 
-* year(year): year年である
-* month(month): month月である
-* date(date): date日である
-* day(day): day曜日である(dayは0から6の数字(0が日曜日、6が土曜日))
-* nthDay(n, day): n番目のday曜日である
-* every(n, baseDate = new Date(1970, 0, 1)): baseDateから(まで)n日おきにあたる日である。例えばbaseDateを2016年1月1日とし、nを3にすると、2016/1/4、2016/1/7、…だけでなく、201512/29、2015/12/26、…も該当する
+* year(year): *year*年である
+* month(month): *month*月である
+* date(date): *date*日である
+* day(day): *day*曜日である(dayは0から6の数字(0が日曜日、6が土曜日))
+* nthDay(n, day): その月の*n*番目の*day*曜日である
+* every(n, baseDate = new Date(1970, 0, 1)): *baseDate*から(まで)*n*日おきにあたる日である。例えばbaseDateを2016年1月1日とし、nを3にすると、2016/1/4、2016/1/7、…だけでなく、201512/29、2015/12/26、…も該当する
 
 ## 論理演算フィルタ
 
@@ -38,9 +38,9 @@ DateクラスはビルトインオブジェクトのDateとほぼ同じ挙動を
 * not(filter): 与えられたフィルタに合致しない
 
 ## 範囲フィルタ
-* since(since): since以降である(sinceはDateもしくはCalendar.Dateのインスタンス)
-* until(until): until以前である(untilはDateもしくはCalendar.Dateのインスタンス)
-* range(start, end): start以降、end以前である(start、endはそれぞれDateもしくはCalendar.Dateのインスタンス)
+* since(since): *since*以降である(sinceはDateもしくはCalendar.Dateのインスタンス)
+* until(until): *until*以前である(untilはDateもしくはCalendar.Dateのインスタンス)
+* range(start, end): *start*以降、*end*以前である(start、endはそれぞれDateもしくはCalendar.Dateのインスタンス)
 
 ## 祝日フィルタ
 * vernalEquinoxDay(): 春分の日である
