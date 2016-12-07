@@ -12,5 +12,5 @@ export default {
     WED: 3,
     THU: 4,
     FRI: 5,
-    SAT: 6,
-}
+    SAT: 6
+};

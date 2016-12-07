@@ -11,6 +11,7 @@ export default class _Date {
         return this.date.valueOf();
     };
 }
+
 for (const val of ['Date', 'Hours', 'Milliseconds', 'Minutes', 'Month', 'Seconds']) {
     _Date.prototype[`add${val}`] = function(delta) {
         const newDate = new Date(this.time);

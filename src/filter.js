@@ -11,22 +11,22 @@ const nthDay = (n, day) => _date => _date.getDay() === day && (0 | (_date.getDat
 const every = (n, baseDate = new Date(1970, 0, 1)) => _date => (baseDate.getTime() - _date.getTime()) / 86400000 % n === 0;
 
 const and = (...filters) => _date => {
-    // filters.reduce((res, filter) => res && filter(_date), true);
+    // filters.every(filter => filter(_date));
     for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](_date)) return false;
     return true;
 };
 const nand = (...filters) => _date => {
-    // filters.reduce((res, filter) => res || !Jfilter(_date), false);
+    // filters.some(filter => !filter(_date));
     for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (!filters[i](_date)) return true;
     return false;
 };
 const or = (...filters) => _date => {
-    // filters.reduce((res, filter) => res || filter(_date), false);
+    // filters.some(filter => filter(_date));
     for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](_date)) return true;
     return false;
 };
 const nor = (...filters) => _date => {
-    // filters.reduce((res, filter) => res && !filter(_date), true);
+    // filters.every(filter => !filter(_date));
     for (let i = 0, _i = filters.length; i < _i; i = 0 | i + 1) if (filters[i](_date)) return false;
     return true;
 };
