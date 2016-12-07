@@ -26,7 +26,7 @@ export default class Month {
         for (let i = 1 - new Date(this.year, this.month, 1).getDay(); i <= this.lastDate; i = 0 | i + 1) {
             week[week.length] = i > 0 ? i : 0;
             if (week.length === 7) {
-                this._weeks[ths._weeks.length] = week;
+                this._weeks[this._weeks.length] = week;
                 week = [];
             }
         }
