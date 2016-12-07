@@ -39,4 +39,10 @@ export default class Month {
         }
         return this._weeks;
     }
+    getNextMonth() {
+        return new Month(this.year, this.month + 1);
+    }
+    getPrevMonth() {
+        return new Month(this.year, this.month - 1);
+    }
 }

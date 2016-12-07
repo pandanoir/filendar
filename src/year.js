@@ -12,4 +12,10 @@ export default class Year {
         }
         return res;
     }
+    getNextYear() {
+        return new Year(this.year + 1);
+    }
+    getPrevYear() {
+        return new Year(this.year - 1);
+    }
 }
