@@ -7,25 +7,26 @@ const toDate = (year, month) => date => new Calendar.Date(year, month, date);
 describe('filendar', () => {
     describe('Date', () => {
         it('constructor', () => {
-            assert.ok(new Calendar.Date(2016, 11 - 1, 25).is(
-                filter.and(filter.nthDay(4, FRI), filter.and(filter.year(2016), filter.month(11 - 1)))
-            ));
+            const fdate1 = new Calendar.Date();
+            const date1 = new Date();
+            assert.equal(fdate1.date, date1.getDate());
+            assert.equal(fdate1.month, date1.getMonth());
+            assert.equal(fdate1.year, date1.getFullYear());
+
+            const fdate2 = new Calendar.Date(2016, 12 - 1, 32);
+            const date2 = new Calendar.Date(2017, 1 - 1, 1);
+            assert.equal(fdate2.date, date2.getDate());
+            assert.equal(fdate2.month, date2.getMonth());
+            assert.equal(fdate2.year, date2.getFullYear());
         });
     });
     describe('Month', () => {
         it('constructor', () => {
-            assert.deepEqual(
-                new Calendar.Month(2016, 11 - 1).filter(filter.day(FRI)),
-                [4, 11, 18, 25].map(toDate(2016, 11 - 1))
-            );
-            assert.deepEqual(
-                new Calendar.Month(2016, 11 - 1).filter(filter.day(TUE)),
-                [1, 8, 15, 22, 29].map(toDate(2016, 11 - 1))
-            );
-            assert.deepEqual(
-                new Calendar.Month(2016, 11 - 1).filter(filter.nthDay(1, TUE)),
-                [1].map(toDate(2016, 11 - 1))
-            );
+            assert.equal(new Calendar.Month().month, new Date().getMonth());
+            assert.equal(new Calendar.Month().year, new Date().getFullYear());
+
+            assert.equal(new Calendar.Month(2016, 12).month, new Date(2017, 1 - 1, 1).getMonth());
+            assert.equal(new Calendar.Month(2016, 12).year, new Date(2017, 1 - 1, 1).getFullYear());
         });
     });
     describe('Year', () => {
