@@ -19,6 +19,17 @@ describe('filendar', () => {
             assert.equal(fdate2.month, date2.getMonth());
             assert.equal(fdate2.year, date2.getFullYear());
         });
+        it('equals', () => {
+            const date1 = new Calendar.Date(2016, 12 - 1, 31);
+            const date2 = new Calendar.Date(2016, 12 - 1, 31);
+            const date3 = new Calendar.Date(2016, 12 - 1, 30);
+            const date4 = new Calendar.Date(2017, 12 - 1, 30);
+            const date5 = new Calendar.Date(2016, 11 - 1, 30);
+            assert.ok(date1.equals(date2));
+            assert.ok(!date1.equals(date3));
+            assert.ok(!date1.equals(date4));
+            assert.ok(!date1.equals(date5));
+        })
     });
     describe('Month', () => {
         it('constructor', () => {

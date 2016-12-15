@@ -2,7 +2,7 @@ import _Date from './date.js';
 
 export default class Month {
     constructor(year = new Date().getFullYear(), month = new Date().getMonth()) {
-        const firstDate = new Date(year, month, 1);
+        const firstDate = new Date(year, month, 1); // monthが0から11以外の場合があるからここで対応
         this.year = firstDate.getFullYear();
         this.month = firstDate.getMonth();
         this.lastDate = new Date(year, month + 1, 0).getDate();

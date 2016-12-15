@@ -14,9 +14,12 @@ export default class _Date {
     is(f) {
         return f(this._date_);
     }
+    equals(d) {
+        return d instanceof _Date && d.time === this.time;
+    }
     valueOf() {
         return this._date_.valueOf();
-    };
+    }
 }
 
 for (const val of ['Date', 'Hours', 'Milliseconds', 'Minutes', 'Month', 'Seconds']) {
@@ -29,6 +32,7 @@ for (const val of ['Date', 'Hours', 'Milliseconds', 'Minutes', 'Month', 'Seconds
         return new _Date(newDate[`set${val}`].call(newDate, newDate[`get${val}`]() - delta));
     }
 }
+
 for (const val of ['Date', 'FullYear', 'Hours', 'Milliseconds', 'Minutes', 'Month', 'Seconds', 'Time', 'UTCDate', 'UTCFullYear', 'UTCHours', 'UTCMilliseconds', 'UTCMinutes', 'UTCMonth', 'UTCSeconds']) {
     _Date.prototype[`get${val}`] = function () {return this._date_[`get${val}`]();};
     _Date.prototype[`set${val}`] = function (...args) {
@@ -36,9 +40,11 @@ for (const val of ['Date', 'FullYear', 'Hours', 'Milliseconds', 'Minutes', 'Mont
         return new _Date(newDate[`set${val}`].apply(newDate, args));
     };
 }
+
 for (const val of ['Day', 'TimezoneOffset', 'UTCDay']) {
     _Date.prototype[`get${val}`] = function () {return this._date_[`get${val}`]();};
 }
+
 for (const val of ['DateString', 'ISOString', 'JSON', 'LocaleDateString', 'LocaleString', 'LocaleTimeString', 'String', 'TimeString', 'UTCString']) {
     _Date.prototype[`to${val}`] = function() {return this._date_[`to${val}`]();};
 }
