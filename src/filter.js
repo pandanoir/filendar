@@ -82,7 +82,7 @@ const fullMoonNight = () => _date => {
 const newYearsDay = () => and(since(new Date(1948, 7 - 1, 20)), month(1 - 1), date(1));
 const comingOfAgeDay = () => or(
     and(range(new Date(1948, 7 - 1, 20), new Date(1999, 12 - 1, 31)), month(1 - 1), date(15)),
-    and(since(new Date(2000, 1, 1)), month(1 - 1), nthDay(2, MON))
+    and(since(new Date(2000, 1 - 1, 1)), month(1 - 1), nthDay(2, MON))
 );
 const foundationDay = () => and(since(new Date(1967, 1 - 1, 1)), month(2 - 1), date(11));
 const greeneryDay = () => or(
