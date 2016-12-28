@@ -4,9 +4,13 @@
   "description": "",
   "main": "dist/filendar.js",
   "scripts": {
+    "preversion": "npm test",
+    "version": "npm run build && gulp && git add -A",
+    "postversion": "git push && git push --tags",
     "pretest": "npm run build",
     "test": "mocha -R spec",
     "build": "rollup src/main.js -c -o dist/filendar.js --name Calendar",
+    "precompress": "npm run build",
     "compress": "gulp"
   },
   "files": [
