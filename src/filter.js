@@ -8,6 +8,16 @@ const month = month => _date => _date.getMonth() === month;
 const date = date => _date => _date.getDate() === date;
 const day = day => _date => _date.getDay() === day;
 const nthDay = (n, day) => _date => _date.getDay() === day && (0 | (_date.getDate() - 1) / 7) === n - 1;
+const lastDay = day => _date => {
+    if (_date.getDay() !== day) return false;
+    const nextDate = new Date(0);
+    nextDate.setDate(1);
+    nextDate.setFullYear(_date.getFullYear());
+    nextDate.setMonth(_date.getMonth());
+    nextDate.setDate(_date.getDate() + 7);
+    console.log(_date, nextDate);
+    return _date.getMonth() !== nextDate.getMonth();
+};
 const every = (n, baseDate = new Date(1970, 0, 1)) => _date => (baseDate.getTime() - _date.getTime()) / 86400000 % n === 0;
 
 const and = (...filters) => _date => {
@@ -158,44 +168,45 @@ const leapYear = () => _date => {
 };
 
 export default {
-    year: year,
-    month: month,
-    date: date,
-    day: day,
-    nthDay: nthDay,
-    every: every,
+    year,
+    month,
+    date,
+    day,
+    nthDay,
+    lastDay,
+    every,
 
-    and: and,
-    nand: nand,
-    or: or,
-    nor: nor,
-    not: not,
+    and,
+    nand,
+    or,
+    nor,
+    not,
 
-    since: since,
-    until: until,
-    range: range,
+    since,
+    until,
+    range,
 
-    vernalEquinoxDay: vernalEquinoxDay,
-    autumnalEquinoxDay: autumnalEquinoxDay,
-    newYearsDay: newYearsDay,
-    comingOfAgeDay: comingOfAgeDay,
-    foundationDay: foundationDay,
-    greeneryDay: greeneryDay,
-    showaDay: showaDay,
-    constitutionMemorialDay: constitutionMemorialDay,
-    childrensDay: childrensDay,
-    marineDay: marineDay,
-    mountainDay: mountainDay,
-    respectForTheAgedDay: respectForTheAgedDay,
-    healthAndSportsDay: healthAndSportsDay,
-    cultureDay: cultureDay,
-    labourThanksgivingDay: labourThanksgivingDay,
-    theEmperorsBirthday: theEmperorsBirthday,
-    publicHoliday: publicHoliday,
+    vernalEquinoxDay,
+    autumnalEquinoxDay,
+    newYearsDay,
+    comingOfAgeDay,
+    foundationDay,
+    greeneryDay,
+    showaDay,
+    constitutionMemorialDay,
+    childrensDay,
+    marineDay,
+    mountainDay,
+    respectForTheAgedDay,
+    healthAndSportsDay,
+    cultureDay,
+    labourThanksgivingDay,
+    theEmperorsBirthday,
+    publicHoliday,
 
-    fullMoonNight: fullMoonNight,
-    substituteHoliday: substituteHoliday,
-    citizensHoliday: citizensHoliday,
-    weekday: weekday,
-    leapYear: leapYear
+    fullMoonNight,
+    substituteHoliday,
+    citizensHoliday,
+    weekday,
+    leapYear
 };

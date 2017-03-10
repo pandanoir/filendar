@@ -73,6 +73,10 @@ describe('filendar', () => {
             const nthDay = filter.nthDay.bind(filter);
             assert.ok(new Calendar.Date(2016, 0, 11).is(nthDay(2, MON)));
         });
+        it('lastDay', () => {
+            const lastDay = filter.lastDay.bind(filter);
+            assert.ok(new Calendar.Date(2017, 1, 24).is(lastDay(FRI)));
+        });
         it('and', () => {
             assert.deepEqual(
                 new Calendar.Year(2016).filter(filter.and(filter.month(10 - 1), filter.date(13))),
