@@ -121,6 +121,7 @@ const theEmperorsBirthday = () => or(
     and(range(new Date(1948, 7 - 1, 20), new Date(1988, 12 - 1, 31)), month(4 - 1), date(29)),
     and(since(new Date(1989, 1 - 1, 1)), month(12 - 1), date(23))
 );
+const coronationDay = () => and(year(2019), month(5 - 1), date(1));
 const publicHoliday = () => or(
     vernalEquinoxDay(),
     autumnalEquinoxDay(),
@@ -137,7 +138,8 @@ const publicHoliday = () => or(
     healthAndSportsDay(),
     cultureDay(),
     labourThanksgivingDay(),
-    theEmperorsBirthday()
+    theEmperorsBirthday(),
+    coronationDay()
 );
 const substituteHoliday = () => _date => {
     if (or(until(new Date(1973, 4 - 1, 12)), publicHoliday())(_date)) return false;
