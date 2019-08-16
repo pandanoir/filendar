@@ -216,10 +216,11 @@ describe('filendar', () => {
             ph1.filter(filter.labourThanksgivingDay()),
             [new Calendar.Date(2016, 11 - 1, 23)]
         ));
-        it('theEmperorsBirthday', () => assert.deepEqual(
-            ph1.filter(filter.theEmperorsBirthday()),
-            [new Calendar.Date(2016, 12 - 1, 23)]
-        ));
+        it('theEmperorsBirthday', () => {
+            assert.deepEqual(ph1.filter(filter.theEmperorsBirthday()), [new Calendar.Date(2016, 12 - 1, 23)]);
+            // assert.deepEqual(new Calendar.Year(2019).filter(filter.theEmperorsBirthday()), []);
+            // assert.deepEqual(new Calendar.Year(2020).filter(filter.theEmperorsBirthday()), [new Calendar.Date(2020, 2 - 1, 23)]);
+        });
         it('publicHoliday', () => {
             assert.deepEqual(ph1, [
                 new Calendar.Date(2016, 1 - 1, 1),

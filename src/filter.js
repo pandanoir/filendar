@@ -119,7 +119,8 @@ const cultureDay = () => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), da
 const labourThanksgivingDay = () => and(since(new Date(1948, 7 - 1, 20)), month(11 - 1), date(23));
 const theEmperorsBirthday = () => or(
     and(range(new Date(1948, 7 - 1, 20), new Date(1988, 12 - 1, 31)), month(4 - 1), date(29)),
-    and(since(new Date(1989, 1 - 1, 1)), month(12 - 1), date(23))
+    and(range(new Date(1989, 1 - 1, 1), new Date(2019, 4 - 1, 30)), month(12 - 1), date(23)),
+    and(since(new Date(2020, 2 - 1, 23)), month(2 - 1), date(23))
 );
 const coronationDay = () => and(year(2019), month(5 - 1), date(1));
 const publicHoliday = () => or(
@@ -142,21 +143,26 @@ const publicHoliday = () => or(
     coronationDay()
 );
 const substituteHoliday = () => _date => {
-    if (or(until(new Date(1973, 4 - 1, 12)), publicHoliday())(_date)) return false;
+    if (or(until(new Date(1973, 4 - 1, 12)), publicHoliday())(_date))
+        return false;
 
     let yesterday = new _Date(_date.getTime()).subtractDate(1);
     if (until(new Date(2007, 1 - 1, 1))(_date)) {
+        // 2007年以前の規定
         return yesterday.is(and(day(SUN), publicHoliday()));
     }
     while (yesterday.is(publicHoliday())) {
-        if (yesterday.is(day(SUN))) return true;
+        if (yesterday.is(day(SUN)))
+            return true;
         yesterday = yesterday.subtractDate(1);
     }
     return false;
 };
 const citizensHoliday = () => _date => {
-    if (until(new Date(1985, 12 - 1,27))(_date)) return false;
-    if (!nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT))(_date)) return false;
+    if (until(new Date(1985, 12 - 1,27))(_date))
+        return false;
+    if (!nor(publicHoliday(), substituteHoliday(), day(SUN), day(SAT))(_date))
+        return false;
 
     const theDate = new _Date(_date.getTime());
     const yesterday = theDate.subtractDate(1);
