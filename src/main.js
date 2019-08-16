@@ -4,9 +4,10 @@ import Year from './year.js';
 import filter from './filter.js';
 import consts from './const.js';
 
-export default Object.assign({
+export default {
     Date: _Date,
-    Month: Month,
-    Year: Year,
-    filter: filter
-}, consts);
+    Month,
+    Year,
+    filter,
+    ...consts,
+};
